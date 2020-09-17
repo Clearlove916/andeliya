@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # andeliya
 
 ## Project setup
@@ -17,3 +18,6 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# andeliya
+>>>>>>> 7f57b448b978351761c398379a3d2267a343269d

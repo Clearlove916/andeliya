@@ -77,7 +77,7 @@
             this.formData.append("file[]", files[i]);
           }
              
-          console.log(this.formData)
+          
         }
         
         fr.readAsDataURL(_this.imgObj)                   //将读取到的文件编码成Data URL
