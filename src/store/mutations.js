@@ -90,21 +90,46 @@ export default{
     })
   },
 
-  //完成支付后订单改变
-  addOrder(state,payload){
-    payload.forEach(item=>{
-      let goodsItem = {id:0,goods:{},state:0}
-      goodsItem.id = '202008290002'+item.id
-      goodsItem.goods.id = item.id
-      goodsItem.goods.imageurl =item.imageurl
-      goodsItem.goods.name = item.name
-      goodsItem.goods.stock = item.stock
-      goodsItem.goods.type = item.type
-      goodsItem.state = 1
-      state.order.push(goodsItem)
-    })
-    return
+  //点击立即购买或者在购物车内购买选中的商品后，将商品加入未支付订单
+  addOrderToWaitSell(state,payload){
+    state.payOrder = []
+    let time = new Date()
+    let year = (time.getFullYear()).toString()
+    let month = time.getMonth() >= 10 ? (time.getMonth()).toString() : "0" + (time.getMonth()).toString()
+    let day = (time.getDate()).toString() >= 10 ? (time.getDate()).toString() : "0" + (time.getDate()).toString()
+    if(payload === ''){
+      state.shopCar.forEach(item=>{
+        if(item.select){
+          let order = {id:"",goods:{},state:0}
+          order.id = year + month + day + "000" + (state.order.length + 1).toString()
+          state.payOrder.push(order.id)
+          order.goods.id = item.id
+          order.goods.imageurl = item.imageurl
+          order.goods.name = item.name
+          order.goods.type = item.type
+          order.goods.stock = item.stock
+          order.state = 1
+          state.order.push(order)
+        }
+      })
+    }else{  
+      payload.forEach(item=>{
+        let goodsItem = {id:"",goods:{},state:0}
+        goodsItem.id = year + month + day + "000" + (state.order.length + 1).toString()
+        state.payOrder.push(goodsItem.id)
+        goodsItem.goods.id = item.id
+        goodsItem.goods.imageurl =item.imageurl
+        goodsItem.goods.name = item.name
+        goodsItem.goods.stock = item.stock
+        goodsItem.goods.type = item.type
+        goodsItem.state = 1
+        state.order.push(goodsItem)
+      })
+    }
+    
   },
+
+  //将未订单修改成已支付订单
 
   //删除订单中的商品
   delOrder(state,payload){

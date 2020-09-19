@@ -62,8 +62,12 @@
       if(type === 1){
         let name = this.$route.params.name
         this.getGoodsByname(name)
+        
       }else if(type === 0){
         this.goodsList = this.$store.getters.backSeltGoods
+        //在购物车内购买选中的商品后,如果未购买,将其加入未支付订单
+        this.$store.commit('addOrderToWaitSell','')
+        //在购物车内购买选中的商品后，删除已经购买过的商品
         this.$store.commit('delGoodsOfSel')
       }
       
@@ -78,7 +82,9 @@
       //根据商品名称获取商品详细信息
       getGoodsByname(name){
         getGoodsByname(1,name).then(res=>{
-          this.goodsList.push(res.data[0])
+          let data = JSON.stringify(res.data)
+          this.goodsList = JSON.parse(data)  
+          this.$store.commit('addOrderToWaitSell',this.goodsList)   
         })
       },
 
@@ -92,8 +98,9 @@
         this.$router.push('/address')
       },
       pay(){
-        this.$store.commit('addOrder',this.goodsList)
-        console.log(this.$store.state.order)
+        let payOrderList = this.$store.state.payOrder
+        console.log(payOrderList)
+        this.$destroy();
         this.$router.push('/user/order')
       }
     },

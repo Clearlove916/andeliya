@@ -38,10 +38,10 @@
         if(this.$store.state.token){
           let newGoods = {}
           newGoods.id = this.goodItem.id
-          newGoods.imgUrl = this.goodItem.imageurl
+          newGoods.imageurl = this.goodItem.imageurl
           newGoods.name = this.goodItem.name
           newGoods.type = this.goodItem.categoryname
-          newGoods.price = this.goodItem.stock
+          newGoods.stock = this.goodItem.stock
           newGoods.number = 1
           newGoods.select = false
           this.$store.commit('putGoodsToShopCAr',newGoods)

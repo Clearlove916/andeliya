@@ -7,7 +7,10 @@ export default{
         count++
       }
     })
-    if(count === state.shopCar.length){
+    if(state.shopCar.length === 0){
+      state.totalPrice = 0
+      return false
+    }else if(count === state.shopCar.length){
       return true
     }else{
       return false
@@ -34,5 +37,5 @@ export default{
       }
     })
     return address
-  }
+  },
 }

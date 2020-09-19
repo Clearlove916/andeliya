@@ -37,13 +37,13 @@
     },
     created(){
       if(this.orderItem.state === 1){
-        this.state = "进行中"
-      }else if(this.orderItem.state === 2){
-        this.state = "已完成"
-      }else if(this.orderItem.state === 3){
-        this.state = "已取消"
-      }else if(this.orderItem.state === 0){
         this.state = "待支付"
+      }else if(this.orderItem.state === 2){
+        this.state = "进行中"
+      }else if(this.orderItem.state === 3){
+        this.state = "已完成"
+      }else if(this.orderItem.state === 0){
+        this.state = "已取消"
       }
     },
     methods:{

@@ -16,9 +16,13 @@
         isSelect:0
       }
     },
+    created(){
+      this.$emit("orderType",0)
+    },
     methods:{
       trTypeClick(index){
         this.isSelect = index
+        this.$emit("orderType",index)
       }
     }
   }

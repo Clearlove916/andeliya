@@ -49,7 +49,6 @@
         gendar:'1',
         user:{},
         headImg:require('../../assets/images/common/headImg.png'),
-        headTip: "点击上传头像",
         formData:null
       }
     },
@@ -64,24 +63,21 @@
       },
       freshImg(e){
         let _this = this
-        _this.imgObj = e.target.files['0']               //得到上传的第一个文件
+       // _this.imgObj = e.target.files['0']               //得到上传的第一个文件
         let fr = new FileReader()                        //异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容
         fr.onload=function(){                             //在读取操作完成时触发
           _this.headImg = fr.result                       // 图片文件赋值给图片标签路径
           let files = e.target.files
           
-
-          this.formData = new FormData()
-          this.formData.append("action", "upresumefile");
+          _this.formData = new FormData()
+          _this.formData.append("action", "upresumefile");
           for (let i = 0; i < files.length; i++) {
-            this.formData.append("file[]", files[i]);
+            _this.formData.append("file[]", files[i]);
           }
-             
-          
         }
         
-        fr.readAsDataURL(_this.imgObj)                   //将读取到的文件编码成Data URL
-        _this.headTip=''     
+        // fr.readAsDataURL(_this.imgObj)                   //将读取到的文件编码成Data URL
+        // _this.headTip=''     
       },
 
       //注册用户
@@ -107,10 +103,7 @@
             let imgUrl = res.data.url
             this.user.imgurl = imgUrl
 
-            console.log(imgUrl)
-
             Register(this.user)
-
           }).then(res=>{
             console.log(res)
           })

@@ -16,10 +16,10 @@ const store = new Vuex.Store({
     order:[
       {id:'202008290001',
       goods:{id:1,imageurl:require('../assets/images/shopCar/goods/Chocolate-cake.png'),
-      name:'巧克力千层蛋糕', type:'草莓装饰款',stock:'25.00'},state:1},
+      name:'巧克力千层蛋糕', type:'草莓装饰款',stock:'25.00'},state:2},
       {id:'202008290002',
       goods:{id:1,imageurl:require('../assets/images/shopCar/goods/Chocolate-cake.png'),
-      name:'巧克力千层蛋糕', type:'草莓装饰款',stock:'25.00'},state:1}
+      name:'巧克力千层蛋糕', type:'草莓装饰款',stock:'25.00'},state:2}
     ],
     shopCar:[
       {id:4,imageurl:require('../assets/images/shopCar/goods/Chocolate-cake.png'),
@@ -33,7 +33,9 @@ const store = new Vuex.Store({
       {id:1,name:'小王',phone:'13525472293',location:'河南省洛阳市嵩县伊动水城A区606',type:1,select:true},
       {id:2,name:'小王',phone:'13525472293',location:'河南省洛阳市嵩县伊动水城A区607',type:0,select:false},
       {id:3,name:'小王',phone:'13525472293',location:'河南省洛阳市嵩县伊动水城A区608',type:0,select:false}
-    ]
+    ],
+    //记录当前处于正在支付状态下未支付订单号
+    payOrder:[]
   },
   mutations,
   actions,

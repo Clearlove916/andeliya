@@ -46,17 +46,19 @@
       getShopCar(uid,token){
         getShopCar(uid,token).then(res=>{
           let goodsList = res.data.table
-          goodsList.forEach(item=>{
-            let goods = {}
-            goods.id = item.id
-            goods.name = item.name
-            goods.imageurl = item.imageurl
-            goods.type = item.categoryname
-            goods.stock = item.stock
-            goods.number = item.num
-            goods.select = false
-            this.$store.commit('putGoodsToShopCAr',goods)
-          }) 
+          if(goodsList){
+            goodsList.forEach(item=>{
+              let goods = {}
+              goods.id = item.id
+              goods.name = item.name
+              goods.imageurl = item.imageurl
+              goods.type = item.categoryname
+              goods.stock = item.stock
+              goods.number = item.num
+              goods.select = false
+              this.$store.commit('putGoodsToShopCAr',goods)
+            }) 
+          } 
         })
       }
     }

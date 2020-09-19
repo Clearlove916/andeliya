@@ -1,9 +1,9 @@
 <template>
   <div class="order">
     <top-bar></top-bar>
-    <transaction-type></transaction-type>
+    <transaction-type @orderType="orderType"></transaction-type>
     <scroll ref="scroll" class="scroll">
-      <order-list></order-list>
+      <order-list :orderTypeNum="orderTypeNum"></order-list>
     </scroll>
   </div>
 </template>
@@ -17,11 +17,21 @@
 
   export default {
     name:'Order',
+    data() {
+      return {
+        orderTypeNum:0
+      }
+    },
     components:{
       TopBar,
       Scroll,
       TransactionType,
       orderList
+    },
+    methods:{
+      orderType(index){
+        this.orderTypeNum = index
+      }
     }
   }
 

@@ -41,6 +41,7 @@
         this.$store.commit('coupuedPrice')
       },
 
+      //在购物车内购买商品
       buy(){
         if(this.$store.getters.backSeltGoods.length === 0){        
           this.$toast.show('你还没有选中任何商品',2000);
