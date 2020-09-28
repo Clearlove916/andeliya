@@ -140,19 +140,20 @@
           return
         }
         this.getHomeGoods()
-        this.$refs.scroll.refresh();
+        this.$refs.scroll.refresh()
       },
 
-      //获取商品函数
+      //获取商品方法
       getHomeGoods(){
         let page = this.goodListShow.page + 1;
         let num = 4
         getGoods(num,page,1).then(res=>{
-          if(res){
+          if(res.data != []){
             this.goodListShow.list.push(...res.data)
             this.goodListShow.page += 1 
-            this.$refs.scroll.finishPullUp();
-          }else{
+            this.$refs.scroll.finishPullUp()
+          }
+          if(res.data === []) {
             console.log("商品已经加载完了")
           }       
         })

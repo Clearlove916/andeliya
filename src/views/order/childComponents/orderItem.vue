@@ -7,14 +7,14 @@
     <div class="middle">
       <img :src="orderItem.goods.imageurl" alt="">
       <div class="goodsMation">
-        <h4>{{orderItem.goods.name}}</h4>
+        <h4>{{orderItem.goods.name}} × {{orderItem.goods.number}}</h4>
         <p>{{orderItem.goods.type}}</p>
-        <span>￥{{orderItem.goods.stock}}</span>
+        <span>￥{{orderItem.goods.stock * orderItem.goods.number}}</span>
       </div>
     </div>
     <div class="bottom">
-      <span @click="delOrder">取消预约</span>
-      <span>确认收货</span>
+      <span @click="delOrCancelOrder">{{orderState}}</span>
+      <span @click="payOrAcceptOrder">{{changeState}}</span>
     </div>
   </div>
 </template>
@@ -24,7 +24,9 @@
     name:'OrderItem',
     data() {
       return {
-        state:""
+        state:"",
+        orderState:"",
+        changeState:""
       }
     },
     props:{
@@ -38,18 +40,48 @@
     created(){
       if(this.orderItem.state === 1){
         this.state = "待支付"
+        this.orderState = "取消订单"
+        this.changeState = "立即付款"
       }else if(this.orderItem.state === 2){
         this.state = "进行中"
+        this.orderState = "取消订单"
+        this.changeState = "确认收货"
       }else if(this.orderItem.state === 3){
         this.state = "已完成"
-      }else if(this.orderItem.state === 0){
+        this.orderState = "删除订单"
+        this.changeState = "再来一单"
+      }else if(this.orderItem.state === 4){
         this.state = "已取消"
+        this.orderState = "删除订单"
+        this.changeState = "恢复订单"
       }
     },
     methods:{
-      //取消订单
-      delOrder(){
-        this.$commontoast.show('确定要取消订单吗',this.orderItem.id,this.$store,'order');
+      //取消订单，并将取消的订单加入到已取消的订单中
+      delOrCancelOrder(){
+        if(this.orderItem.state === 2 || this.orderItem.state === 1){
+          this.$commontoast.show('确定要取消订单吗',this.orderItem.id,'cancel',this.$store,'order')
+        }
+        //删除订单
+        if(this.orderItem.state === 3 || this.orderItem.state === 4){
+          this.$commontoast.show('确定要删除订单吗',this.orderItem.id,'del',this.$store,'order')
+        }
+      },
+      //
+      payOrAcceptOrder(){
+        if(this.orderItem.state === 1){
+          this.$store.commit('delOrder',this.orderItem.id)
+          this.$router.push({
+            name:'payment',
+            params:{
+              name:this.orderItem.goods.name,
+              type:1
+            }
+          })
+        }
+        if(this.orderItem.state === 2){
+          this.$commontoast.show('确定要收货吗?',this.orderItem.id,'accept',this.$store,'order')
+        }
       }
     }
   }

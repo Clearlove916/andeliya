@@ -22,6 +22,7 @@
     methods:{
       trTypeClick(index){
         this.isSelect = index
+        this.$store.commit('changeKey')
         this.$emit("orderType",index)
       }
     }

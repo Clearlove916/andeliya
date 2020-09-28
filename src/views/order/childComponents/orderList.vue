@@ -1,5 +1,5 @@
 <template>
-  <div class="orderList">
+  <div class="orderList" :key="$store.state.key">
     <order-item v-for="(item,index) in backOrder"
      :key="index" :orderItem="item"></order-item>
   </div>
@@ -10,6 +10,11 @@
 
   export default {
     name:'OrderList',
+    data() {
+      return {
+        orderList: this.$store.state.order
+      }
+    },
     props:{
       orderTypeNum:{
         Type:Number,
@@ -23,16 +28,16 @@
     },
     computed:{
       backOrder(){
-        let orderList = this.$store.state.order
+        this.orderList = this.$store.state.order
         let newOrderList=[]
         if(this.orderTypeNum === 0){
           newOrderList=[]
-          orderList.forEach(item=>{
+          this.orderList.forEach(item=>{
             newOrderList.push(item)
           })
         }else{
           newOrderList=[]
-          orderList.forEach(item=>{
+          this.orderList.forEach(item=>{
             if(item.state === this.orderTypeNum){
               newOrderList.push(item)
             }

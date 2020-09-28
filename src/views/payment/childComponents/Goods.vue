@@ -4,7 +4,7 @@
       <img :src="goods.imageurl" alt="">
       <div class="goodsInfo">
         <span class="name">{{goods.name}}</span>
-        <span class="type">慕斯蛋糕</span>
+        <span class="type">{{goods.type}}</span>
         <div class="numAndPrice">
           <span class="num">×{{getNum}}</span>
           <span class="price">￥{{goods.stock}}</span>

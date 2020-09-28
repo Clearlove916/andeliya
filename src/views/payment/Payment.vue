@@ -6,8 +6,30 @@
         <harvest-address @click.native="selectShop"></harvest-address>
         <goods v-for="(item,index) in goodsList" :goods="item" :key="index"></goods>
         <sp-address @click.native="changeAddress"></sp-address>
+        <div class="payMethod">
+          <span>支付方式</span>
+          <div class="selectPayMethod" @click="selectPayMethod">
+            <img :src="payMethodImg" alt="">
+            <span>{{payMethodTxt}}</span>
+            <img src="~/assets/images/payment/common/更多.svg" alt="">
+          </div>
+        </div>
+        <div class="agreement">
+          <img :src="agreementImg" alt="" @click="sureAgreement">
+          <span>我已经阅读并同意 <p>《支付协议》</p></span>
+        </div>
       </div> 
     </scroll>
+    <div class="payMethodList" ref="payMethodList">
+      <div class="title">
+        <h4>请选择支付方式</h4>
+        <img src="~assets/images/payment/payMethod/删除.svg" @click="selectPayMethod" alt="">
+      </div>
+      <div class="payMethodListBox">
+        <div @click="changePayState(0)">微信支付</div>
+        <div @click="changePayState(1)">支付宝支付</div>
+      </div>
+    </div>
     <bootom-bar :totalPrice="totalPrice" @pay="pay"></bootom-bar>
   </div>
 </template>
@@ -27,7 +49,13 @@
     name:'Payment',
     data() {
       return {
-        goodsList:[]
+        goodsList:[],
+        payMethod:0,
+        payMethodImg:require("../../assets/images/payment/payMethod/微信支付.svg"),
+        payMethodTxt:"微信支付",
+        agreementImg:require("../../assets/images/payment/payMethod/同意1.svg"),
+        agreementState:0,
+        isShow:false
       }
     },
     components:{
@@ -59,6 +87,7 @@
     },
     created(){      
       let type = this.$route.params.type
+
       if(type === 1){
         let name = this.$route.params.name
         this.getGoodsByname(name)
@@ -98,23 +127,160 @@
         this.$router.push('/address')
       },
       pay(){
-        let payOrderList = this.$store.state.payOrder
-        console.log(payOrderList)
+        this.$store.commit('changeOrder','')
         this.$destroy();
         this.$router.push('/user/order')
+      },
+
+      //选择支付方式
+      selectPayMethod(){
+        if(this.isShow === false){
+          this.$refs.payMethodList.style.bottom = '0px';
+          this.$refs.payMethodList.style.transition='all 0.9s';
+          this.isShow = true
+        }else if(this.isShow === true){
+          this.closePayMethodBox()
+        }
+        
+      },
+      sureAgreement(){
+        if(this.agreementState === 0){
+          this.agreementImg = require("../../assets/images/payment/payMethod/同意.svg")
+          this.agreementState = 1
+        }else if(this.agreementState === 1){
+          this.agreementImg = require("../../assets/images/payment/payMethod/同意1.svg")
+          this.agreementState = 0
+        }
+      },
+
+      changePayState(state){
+        if(state === 0){
+          this.payMethodImg = require("../../assets/images/payment/payMethod/微信支付.svg")
+          this.payMethodTxt = "微信支付"
+          this.closePayMethodBox()
+        }else if(state === 1){
+          this.payMethodImg = require("../../assets/images/payment/payMethod/支付宝支付.svg")
+          this.payMethodTxt = "支付宝支付"
+          this.closePayMethodBox()
+        }
+      },
+      closePayMethodBox(){
+        this.$refs.payMethodList.style.bottom = '-150px';
+        this.$refs.payMethodList.style.transition='all 0.9s';
+        this.isShow = false
       }
-    },
+    }
   }
 
 </script>
 <style lang="less" scoped>
   .payment{
+    position: relative;
     .scroll{
       height: calc(100vh - 44px - 49px);
       background-color: #f2f2f2;
       overflow: hidden;
       .container{
         padding-top: 12px;
+      }
+      .payMethod{
+        background-color: white;
+        width: 93%;
+        height: 50px;
+        border-radius: 10px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        span{
+          color: #afafaf;
+          font-size: 18px;
+          padding-left: 15px;
+        }
+        .selectPayMethod{
+          height: 50px;
+          display: flex;
+          align-items: center;
+          img{
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+          }
+          span{
+            color: black!important;
+            font-size: 16px;
+            padding-right: 5px;
+            vertical-align: middle;
+          } 
+        }
+      }
+      .agreement{
+        width: 93%;
+        height: 25px;
+        margin: 0 auto;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+          img{
+            width: 20px;;
+            vertical-align: middle;
+          }
+          span{
+            font-size: 13px;
+            color: #afafaf;
+            padding-left: 15px;
+            p{
+              display: inline;
+              color: rgb(0, 132, 255);
+            }
+          }
+        }
+    }
+    .payMethodList{
+      z-index: 999;
+      width: 100%;
+      position: absolute;
+      background-color: white;
+      height: 150px;
+      bottom: -150px;
+      .title{
+        display: flex;
+        align-items: center;
+        height: 40px;
+        h4{
+          order: 1;
+          margin: 0;
+          width: 100%;
+          text-align: center;
+          padding-left: 35px;
+        }
+        img{
+          margin-right: 15px;
+          order: 1;
+          height: 20px;
+        }
+      }
+      .payMethodListBox{
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        div{
+          width: 93%;
+          text-align: center;
+          height: 40px;
+          line-height: 40px;
+          border-radius: 5px;    
+        }
+        div:first-child{
+          color: rgb(0, 199, 0);
+          border: 1px solid rgb(0, 199, 0);
+        }
+        div:last-child{
+          color: rgb(0, 122, 236);
+          border: 1px solid rgb(0, 122, 236);
+        }
       }
     }
   }

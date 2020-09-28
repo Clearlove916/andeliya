@@ -35,10 +35,6 @@
     align-items: center;
   }
   .bootomBar{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
     height: 49px;
     padding: 0 15px;
     justify-content: space-between;

@@ -47,7 +47,7 @@
     methods:{
       //删除地址
       delAddress(){
-        this.$commontoast.show('确定要删除该地址吗',this.addressItem.id,this.$store,'address');
+        this.$commontoast.show('确定要删除该地址吗',this.addressItem.id,'',this.$store,'address');
       },
 
       //修改默认地址

@@ -106,6 +106,7 @@ export default{
           order.goods.id = item.id
           order.goods.imageurl = item.imageurl
           order.goods.name = item.name
+          order.goods.number = item.number
           order.goods.type = item.type
           order.goods.stock = item.stock
           order.state = 1
@@ -129,14 +130,42 @@ export default{
     
   },
 
-  //将未订单修改成已支付订单
+  //将未支付订单修改成已支付订单
+  changeOrder(state,payload){
+    state.order.forEach(citem=>{
+      state.payOrder.forEach(titem=>{
+        if(citem.id ===titem){
+          citem.state = 2
+        }
+      })
+    })
+    state.payOrder = []
+  },
 
-  //删除订单中的商品
+  //将取消的订单加入到已取消的订单中
+  cancelOrder(state,payload){
+    state.order.forEach(item=>{
+      if(item.id === payload){
+        item.state = 4
+      }
+    })
+  },
+
+  //删除已取消的订单或删除已经完成的订单
   delOrder(state,payload){
     state.order = state.order.filter(item=>{
       return item.id !== payload
     })
     return
+  },
+
+  //确认订单收货
+  acceptOrder(state,payload){
+    state.order.forEach(item=>{
+      if(item.id === payload){
+        item.state = 3
+      }
+    })
   },
 
   //删除收货地址
@@ -183,5 +212,9 @@ export default{
   //记录用户登陆前要打开的页面
   goRouter(state,payload){
     state.router = payload
+  },
+
+  changeKey(state){
+    state.key = state.key + 1
   }
 }

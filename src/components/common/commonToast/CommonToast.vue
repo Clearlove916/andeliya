@@ -8,6 +8,7 @@
   </div>
 </template>
 <script>
+
   export default{
     name:'CommonToast',
     data() {
@@ -16,25 +17,39 @@
         message:'',
         id:'',
         store:null,
-        type:''
+        type:'',
+        operation:''
       }
     },
     methods: {
-      show(message,orderId,store,type){
+      show(message,orderOrAddressId,operation,store,type){
         this.isshow = true
         this.message=message;
-        this.id = orderId
+        this.id = orderOrAddressId
+        this.operation = operation
         this.store = store
         this.type = type
       },
       confirm(){
         if(this.type === 'order'){
-          this.store.commit('delOrder',this.id)
+          if(this.operation === 'cancel'){
+            this.store.commit('cancelOrder',this.id)
+          }
+          if(this.operation === 'del'){
+            this.store.commit('delOrder',this.id)
+          }
+          if(this.operation === 'accept'){
+            this.store.commit('acceptOrder',this.id)
+          }
         }else if(this.type === 'address'){
           this.store.commit('delAddress',this.id)
         }
+
+        this.store.commit('changeKey')
         
         this.isshow = false
+
+        
       },
       cancel(){
         this.isshow = false

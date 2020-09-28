@@ -40,11 +40,13 @@
     },
     activated(){
       this.goodList = this.$store.state.shopCar
+      this.$refs.scroll.refresh()
     },
     methods:{
       //将请求到购物车信息保存到vuex中
       getShopCar(uid,token){
         getShopCar(uid,token).then(res=>{
+          console.log(res)
           let goodsList = res.data.table
           if(goodsList){
             goodsList.forEach(item=>{
